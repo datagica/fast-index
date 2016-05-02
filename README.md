@@ -66,7 +66,7 @@ const matches = index.get("le chef");
   { value: { label: 'the chef', type: 'book' },
     score: 0.5 },
 
-  // note how "el chef" has a lower score, altough it would be closer using
+  // note how "el chef" has a lower score, although it would be closer using
   // a distance function. That's because we choose a naive spelling function
   // that converts everything into a single locale (english).
   // a better function would be more fine-tuned and store each locale
