@@ -2,6 +2,11 @@ const chai = require('chai');
 chai.use(require('chai-fuzzy'));
 const expect = chai.expect;
 
+const util = require('util');
+const pretty = (x) => {
+  console.log(util.inspect(x, false,7,true));
+};
+
 const FastIndex = require("../lib/fast-index");
 
 describe('@datagica/fast-index', () => {
@@ -15,7 +20,6 @@ describe('@datagica/fast-index', () => {
       ]
     });
 
-    const testInput = 'Vegeta';
 
     it('should find the test input', (done) => {
       index.loadAsync([{
@@ -23,24 +27,32 @@ describe('@datagica/fast-index', () => {
         aliases: [
           'Vegetables',
           'vegetable.'
-        ],
-        description: 'edible thing'
+        ]
       }, {
-        label: 'vegeta',
-        description: 'character'
+        label: 'vegeta'
       }]).then(ready => {
-        const matches = index.get(testInput);
-        console.log("matches 1: "+JSON.stringify(matches));
+
+        pretty([...index.store]);
+
+        const matches = index.get('Vegetable');
+        // console.log("matches 1: "+JSON.stringify(matches));
         expect(matches).to.be.like([
           {
-            "label":"vegeta",
-            "description":"character"
+            value: {
+              label: "vegetable",
+              aliases: [
+                "Vegetables",
+                "vegetable."
+              ]
+            },
+            score: 1
           }
         ]);
         done()
       })
     })
   })
+
 
   describe('in sync mode', () => {
 
@@ -49,28 +61,59 @@ describe('@datagica/fast-index', () => {
         'label',
         'aliases'
       ],
-      aliaser: (x) => {
-        return [
-          x.replace(/(?:le|el) /gi, 'the ')
-        ]
+      spellings: (map, word) => {
+        //console.log("generating spelling for "+word);
+        map.set(word.replace(/(?:le|el) /gi, 'the '), 0.5);
       }
-    }).loadSync([{
+    }).loadSync([
+    {
       label: 'the chef',
-      description: 'the master cook'
+      type: 'movie'
     }, {
+      label: 'the chef',
+      type: 'book'
+    },, {
       label: 'el chef',
+      type: 'unknow',
       aliases: [
         'el chef'
-      ],
-      description: 'the cook, too'
+      ]
     }]);
 
-    const testInput = 'le chef';
+    pretty([...index.store]);
 
     it('should find the test input', () => {
-      const matches = index.get(testInput);
-      console.log("matches 2: "+JSON.stringify(matches));
-      expect(matches).to.be.like([]);
+      const matches = index.get("le chef");
+      pretty(matches);
+      //console.log("matches 2: "+JSON.stringify(matches));
+      expect(matches).to.be.like([
+          {
+            score: 0.5,
+            value: {
+              label: "the chef",
+              type: "movie"
+            }
+          },
+          {
+            score: 0.5,
+            value: {
+              label: "the chef",
+              type: "book"
+            }
+          },
+          {
+            score: 0.25,
+            value: {
+              aliases: [
+                "el chef"
+              ],
+              label: "el chef",
+              type: "unknow"
+            }
+          }
+      ])
+
     })
+
   })
 })
