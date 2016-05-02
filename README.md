@@ -86,7 +86,7 @@ lookup, as it searched more alternative spellings than necessary.
 
 ### Solution
 
-The new Fast Index simply convert its inputs into a simple representation of the
+The new Fast Index simply converts its inputs into a simple representation of the
 word, where punctuation, accents, useless spaces etc.. have been removed.
 
 These transformations are quite opinionated, but some can be opted-out.
