@@ -37,7 +37,7 @@ index.loadSync([
   // duplicate entries are supported and will be returned in the results
   { label: 'the chef', type: 'book' },
 
-  // duplicates inside an entry a simply skipped
+  // duplicates inside an entry are simply skipped
   { label: 'el chef', aliases: [ 'el chef' ] }
 ]);
 
