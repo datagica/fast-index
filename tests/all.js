@@ -23,7 +23,10 @@ describe('@datagica/fast-index', () => {
 
     it('should work on a dirty get key', (done) => {
       index.loadAsync([{
-        label: 'vegetable',
+        label: {
+          'en': 'vegetable',
+          'fr': 'légume'
+        },
         aliases: [
           'Vegetables',
           'vegetable.'
@@ -35,11 +38,14 @@ describe('@datagica/fast-index', () => {
         pretty([...index.store]);
 
         const matches = index.get(' Vegetable, ');
-        // console.log("matches 1: "+JSON.stringify(matches));
+        console.log("matches 1: "+JSON.stringify(matches));
         expect(matches).to.be.like([
           {
             value: {
-              label: "vegetable",
+              label: {
+                en: "vegetable",
+                fr: "légume"
+              },
               aliases: [
                 "Vegetables",
                 "vegetable."
