@@ -21,7 +21,7 @@ describe('@datagica/fast-index', () => {
     });
 
 
-    it('should find the test input', (done) => {
+    it('should work on a dirty get key', (done) => {
       index.loadAsync([{
         label: 'vegetable',
         aliases: [
@@ -34,7 +34,7 @@ describe('@datagica/fast-index', () => {
 
         pretty([...index.store]);
 
-        const matches = index.get('Vegetable');
+        const matches = index.get(' Vegetable, ');
         // console.log("matches 1: "+JSON.stringify(matches));
         expect(matches).to.be.like([
           {
@@ -82,7 +82,7 @@ describe('@datagica/fast-index', () => {
 
     pretty([...index.store]);
 
-    it('should find the test input', () => {
+    it('should work on a different spelling key', () => {
       const matches = index.get("le chef");
       pretty(matches);
       //console.log("matches 2: "+JSON.stringify(matches));

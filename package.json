@@ -1,6 +1,6 @@
 {
   "name": "@datagica/fast-index",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Fast Index",
   "main": "./lib/fast-index.js",
   "scripts": {
