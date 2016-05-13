@@ -20,7 +20,6 @@ describe('@datagica/fast-index', () => {
       ]
     });
 
-
     it('should work on a dirty get key', (done) => {
       index.loadAsync([{
         label: {
@@ -35,10 +34,10 @@ describe('@datagica/fast-index', () => {
         label: 'vegeta'
       }]).then(ready => {
 
-        pretty([...index.store]);
+        //pretty([...index.store]);
 
         const matches = index.get(' Vegetable, ');
-        console.log("matches 1: "+JSON.stringify(matches));
+        //console.log("matches 1: "+JSON.stringify(matches));
         expect(matches).to.be.like([
           {
             value: {
@@ -58,7 +57,6 @@ describe('@datagica/fast-index', () => {
       })
     })
   })
-
 
   describe('in sync mode', () => {
 
@@ -86,11 +84,11 @@ describe('@datagica/fast-index', () => {
       ]
     }]);
 
-    pretty([...index.store]);
+    // pretty([...index.store]);
 
     it('should work on a different spelling key', () => {
       const matches = index.get("le chef");
-      pretty(matches);
+      //pretty(matches);
       //console.log("matches 2: "+JSON.stringify(matches));
       expect(matches).to.be.like([
           {
@@ -118,6 +116,84 @@ describe('@datagica/fast-index', () => {
             }
           }
       ])
+
+    })
+
+  })
+
+  describe('on non-latin characters', () => {
+
+    const index = new FastIndex({
+      fields: [
+        'label',
+        'aliases'
+      ],
+      spellings: (map, word) => {
+      }
+    }).loadSync([
+      {
+        label: {
+          zh: '浙江大学',
+          en: 'Zhejiang University',
+          fr: 'Université de Zhejiang',
+          es: 'Universidad de Zhejiang',
+          ru: 'Чжэцзянский университет'
+        },
+        aliases: [
+          'Zheda',
+          'ZJU',
+          'Zhejiang University',
+          'Che Kiang University',
+          '浙江大学',
+          '浙江大學',
+          'Zhèjiāng Dàxué',
+          'Universidad de Zhejiang',
+          'Université de Zhejiang',
+          'Zhejiang-Universität',
+          'Чжэцзянский университет',
+          '저장 대학'
+        ]
+      }
+    ]);
+
+    //pretty([...index.store]);
+
+    it('should match non-latin patterns', () => {
+      const matches = index.get('저장 대학');
+      expect(matches).to.be.like([
+        {
+          score: 1,
+          value: {
+            label: {
+              zh: '浙江大学',
+              en: 'Zhejiang University',
+              fr: 'Université de Zhejiang',
+              es: 'Universidad de Zhejiang',
+              ru: 'Чжэцзянский университет'
+            },
+            aliases: [
+              'Zheda',
+              'ZJU',
+              'Zhejiang University',
+              'Che Kiang University',
+              '浙江大学',
+              '浙江大學',
+              'Zhèjiāng Dàxué',
+              'Universidad de Zhejiang',
+              'Université de Zhejiang',
+              'Zhejiang-Universität',
+              'Чжэцзянский университет',
+              '저장 대학'
+            ]
+          }
+        }
+      ])
+
+    })
+
+    it('should not match other non-latin characters such as •', () => {
+      const matches = index.get('•');
+      expect(matches).to.be.like([])
 
     })
 
