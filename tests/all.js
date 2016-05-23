@@ -153,6 +153,14 @@ describe('@datagica/fast-index', () => {
           'Чжэцзянский университет',
           '저장 대학'
         ]
+      },
+      {
+        label: {
+          en: "abd-al-aziz"
+        },
+        aliases: [
+          "abd-al-aziz"
+        ]
       }
     ]);
 
@@ -195,6 +203,23 @@ describe('@datagica/fast-index', () => {
       const matches = index.get('•');
       expect(matches).to.be.like([])
 
+    })
+
+    it('should match words with hyphen', () => {
+      const matches = index.get('abd-al-aziz');
+      expect(matches).to.be.like([
+      {
+         "score": 1,
+          "value": {
+            "aliases": [
+              "abd-al-aziz"
+            ],
+            "label": {
+              "en": "abd-al-aziz"
+            }
+          }
+        }
+      ])
     })
 
   })
