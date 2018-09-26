@@ -7,7 +7,7 @@ const pretty = (x) => {
   console.log(util.inspect(x, false,7,true));
 };
 
-const FastIndex = require("../lib/fast-index");
+const FastIndex = require("./index");
 
 describe('@datagica/fast-index', () => {
 

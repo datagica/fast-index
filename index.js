@@ -59,9 +59,32 @@ function removeAccents(str){
 
 function defaultSpellings(x){};
 
-class TrimKeyMap extends Map {
-  set(k,v) {
-    super.set(k.trim(),v);
+// cannot use inheritance because:
+// https://github.com/discordjs/discord.js/issues/2495
+class TrimKeyMap {
+  constructor() {
+    this._map = new Map();
+  }
+  set (k, v) {
+    return this._map.set(k.trim(), v);
+  }
+  get (k) {
+    return this._map.get(k.trim());
+  }
+  has (k) {
+    return this._map.has(k.trim());
+  }
+  keys () {
+    return this._map.keys();
+  }
+  values () {
+    return this._map.values();
+  }
+  entries () {
+    return this._map.entries();
+  }
+  clear () {
+    return this._map.clear();
   }
 }
 
