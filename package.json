@@ -1,8 +1,8 @@
 {
   "name": "@datagica/fast-index",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Fast Index",
-  "main": "./lib/index.js",
+  "main": "./index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha --harmony --bail --require chai index.test.js"
   },
